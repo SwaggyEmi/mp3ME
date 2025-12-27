@@ -36,7 +36,7 @@ graph(g)
 	artist_text->setPosition({SCREEN_WIDTH / 2, 400});
 
 	//load all songs
-	Database::load_songs(); //fixme later
+	 //fixme later
 	load_songs();
 
 

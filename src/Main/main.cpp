@@ -12,11 +12,10 @@
 #include "MediaWindow.hpp"
 #include "SongGraph.hpp"
 
-
 using itr = std::filesystem::directory_iterator;
 
 
-void load_songs(){
+void load_new_songs(){
     std::string path = "songs";
     for (const auto& entry : itr(path)){
         std::string file_path = entry.path();
@@ -39,7 +38,7 @@ void load_songs(){
 int main(){
     
     if (!Database::load_songs()){
-        load_songs();
+        load_new_songs();
     }
 
     SongGraph graph;

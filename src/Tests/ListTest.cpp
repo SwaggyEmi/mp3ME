@@ -35,7 +35,7 @@ int main(){
     
 
     
-    for (const auto& song : Database::get_songs()){
+    for (const auto& song : Database::get_all_songs()){
         std::cout << "Title: " << song->get_title() << "\n";
         std::cout << "Artist: " << song->get_artist() << "\n";
         std::cout << "Album: " << song->get_album() << "\n";
