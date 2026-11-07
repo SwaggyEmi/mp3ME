@@ -1,6 +1,7 @@
 
 
-
+#include <cstdlib>
+#include <string>
 #include "SongGraph.hpp"
 #include "Database.hpp"
 #include "Song.hpp"
@@ -16,7 +17,11 @@ using itr = std::filesystem::directory_iterator;
 
 
 void load_new_songs(){
-    std::string path = "songs";
+    std::string home = std::getenv("HOME");
+    std::string path = home + "/Music/mp3ME";
+    if (!std::filesystem::is_directory(path)){
+        std::filesystem::create_directory(path);
+    }
     for (const auto& entry : itr(path)){
         std::string file_path = entry.path();
         TagLib::FileRef f(file_path.c_str());
