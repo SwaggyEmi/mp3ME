@@ -2,6 +2,7 @@
 
 #include "Database.hpp"
 #include "Song.hpp"
+#include <cstdlib>
 #include <vector>
 #include <memory>
 #include <unordered_map>
@@ -22,7 +23,8 @@ bool ByTimesListened::operator()(const Song* s1, const Song *s2) const{
    }
 
 
-const std::string Database::songs_file = "songs.bin";
+const std::string Database::songs_file = std::string(std::getenv("HOME")) + 
+    "/Music/mp3ME/songs.bin";
 std::vector<std::unique_ptr<Song>> Database::songs{};
 std::unordered_map<std::string, std::vector<Song*>> Database::songs_by_artists{};
 std::unordered_map<std::string, std::vector<Song*>> Database::songs_in_album{};
