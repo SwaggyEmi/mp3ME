@@ -1,6 +1,5 @@
 
 #include "MediaWindow.hpp"
-#include <SongGraph.hpp>
 #include "Song.hpp"
 #include "Database.hpp"
 #include "tag.h"

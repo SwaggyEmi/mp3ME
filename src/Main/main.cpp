@@ -2,7 +2,6 @@
 
 #include <cstdlib>
 #include <string>
-#include "SongGraph.hpp"
 #include "Database.hpp"
 #include "Song.hpp"
 #include "tag.h"
@@ -11,7 +10,6 @@
 #include <filesystem>
 
 #include "MediaWindow.hpp"
-#include "SongGraph.hpp"
 
 using itr = std::filesystem::directory_iterator;
 
@@ -46,8 +44,7 @@ int main(){
         load_new_songs();
     }
 
-    SongGraph graph;
-    MediaWindow m(&graph);
+    MediaWindow m;
 
     
     m.run();

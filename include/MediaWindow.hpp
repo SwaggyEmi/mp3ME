@@ -11,7 +11,6 @@
 #include <vector>
 #include "PlayMedia.hpp"
 
-class SongGraph; 
 
 class MediaWindow : public WindowADT{
 	sf::Font title_font;
@@ -26,7 +25,6 @@ class MediaWindow : public WindowADT{
 	int selected_index = -1; 
 	int first_visible_index = 0; 
 
-	SongGraph* graph = nullptr;
 
 	//Buttons
 	sf::RectangleShape prev_button;
@@ -67,7 +65,7 @@ protected:
 
 public:
 	// MediaWindow();
-	explicit MediaWindow(SongGraph* g); 
+	explicit MediaWindow(); 
 
 	void load_songs();
 

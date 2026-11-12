@@ -5,20 +5,18 @@
 #include "WindowADT.hpp"
 #include <iostream>
 #include "Database.hpp"
-#include  "SongGraph.hpp"
 #include <algorithm>
 #include "PlayMedia.hpp"
 
 
 
 
-MediaWindow::MediaWindow(SongGraph* g): WindowADT("Media Window"), 
+MediaWindow::MediaWindow(): WindowADT("Media Window"), 
 song_title(nullptr),
 artist_text(nullptr),
 prev_label(title_font, "Prev", 18),
 play_label(title_font, "Play", 18),
-next_label(title_font, "Next", 18),
-graph(g)
+next_label(title_font, "Next", 18)
 {
 	//font
 	if(!title_font.openFromFile("assets/Fonts/Sono-Bold.ttf")){
@@ -122,21 +120,7 @@ void MediaWindow::handle_event(const sf::Event& event){
 				display_song_info(s);  
 				play_selected_song(); 
 				
-			if(graph && s) {
-				auto neighbors = graph->get_similar_songs(s);
-				std::cout << "Similar songs from this artist: " <<s->get_title() << ":\n"; 
 			
-			if(neighbors.empty()){
-				std::cout <<"No similar song found.\n"; 
-			}
-			else{
-				for(Song* n : neighbors){
-					if(n == s){
-						continue; 
-					}
-					std::cout << " - by" << n->get_title() << " by " << n->get_artist() << "\n"; 
-				}
-			}
 		}
 	}
 }
@@ -173,7 +157,7 @@ void MediaWindow::handle_event(const sf::Event& event){
 			return; 
 		}
 	  }
-	}
+	
 
 	//Event: Scrolling
 	if (auto* mouse = event.getIf<sf::Event::MouseWheelScrolled>()){

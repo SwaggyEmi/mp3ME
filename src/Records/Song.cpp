@@ -23,14 +23,9 @@ void read_str(std::ifstream& file, std::string& s){
     }
 }
 
-Song::Song(){
-    this->file_name = "No File Name";
-    this->title = "No Song Title";
-    this->artist = "No Song Artist";
-    this->album = "No Song Album";
-    this->year_rel = 0;
-    this->times_played = 0;
-}
+Song::Song() : file_name("No File Name"), title("No Song Title"),
+                artist("No Song Artist"), album("No Song Album"),
+                year_rel(0), times_played(0){}
 
 void Song::set_file_name(const std::string& file_name){
     this->file_name = file_name;
@@ -47,9 +42,6 @@ void Song::set_album(const std::string& album){
 void Song::set_year_rel(const int year_rel){
     this->year_rel = year_rel;
 }
-void Song::add_genre(const std::string& genre){
-    this->genres.push_back(genre);
-}
 
 void Song::inc_times_played(){
     ++times_played;
@@ -65,7 +57,6 @@ std::string Song::get_album() const{return album;}
 
 unsigned int Song::get_year_rel() const{return year_rel;}
 
-std::vector<std::string> Song::get_genres() const{return genres;}
 
 unsigned int Song::get_times_played() const{return times_played;}
 
@@ -77,14 +68,9 @@ void Song::save(std::ofstream& file){
     write_str(file, album);
     std::uint32_t year_r = year_rel;
     std::uint32_t times_p = times_played;
-    std::uint32_t genre_size = static_cast<std::uint32_t>(genres.size());
     file.write(reinterpret_cast<const char*>(&year_r), sizeof(year_r));
     file.write(reinterpret_cast<const char*>(&times_p), sizeof(times_p));
-    file.write(reinterpret_cast<const char*>(&genre_size), sizeof(genre_size));
-
-    for (const auto& genre : genres){
-        write_str(file, genre);
-    }
+    
     std::cout << title << " successfully saved!\n";
 }
 
@@ -106,15 +92,6 @@ Song Song::load(std::ifstream& file){
 
     song.year_rel = year_r;
     song.times_played = times_p;
-
-    song.genres.clear();
-    song.genres.reserve(genre_size);
-
-    for (std::uint32_t x = 0; x < genre_size; ++x){
-        std::string genre;
-        read_str(file, genre);
-        song.genres.push_back(std::move(genre));
-    }
 
     std::cout << song.title << " successfully loaded!\n";
     return song;
