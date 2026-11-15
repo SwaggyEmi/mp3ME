@@ -2,6 +2,8 @@
 #include "SFML/Graphics/Sprite.hpp"
 #include "SFML/Graphics/Image.hpp"
 #include "SFML/Graphics/Texture.hpp"
+#include <algorithm>
+#include <memory>
 #include <string>
 #include <vector>
 #include <cstdint>
@@ -74,7 +76,7 @@ std::string Song::get_album() const{return album;}
 unsigned int Song::get_year_rel() const{return year_rel;}
 
 const sf::Sprite *Song::getImage() const{
-    if (imgSprite) return imgSprite;
+    return imgSprite;
 }
 
 
@@ -95,23 +97,22 @@ void Song::save(std::ofstream& file){
 }
 
 
-Song Song::load(std::ifstream& file){
-    Song song;
+std::unique_ptr<Song> Song::load(std::ifstream& file){
+    std::unique_ptr<Song> song = std::make_unique<Song>();
 
-    read_str(file, song.file_name);
-    read_str(file, song.title);
-    read_str(file, song.artist);
-    read_str(file, song.album);
+    read_str(file, song->file_name);
+    read_str(file, song->title);
+    read_str(file, song->artist);
+    read_str(file, song->album);
     std::uint32_t year_r = 0;
     std::uint32_t times_p = 0;
-    std::uint32_t genre_size = 0;
 
     file.read(reinterpret_cast<char *>(&year_r), sizeof(year_r));
     file.read(reinterpret_cast<char *>(&times_p), sizeof(times_p));
-    song.year_rel = year_r;
-    song.times_played = times_p;
+    song->year_rel = year_r;
+    song->times_played = times_p;
 
-    std::cout << song.title << " successfully loaded!\n";
+    std::cout << song->title << " successfully loaded!\n";
     return song;
 }
 

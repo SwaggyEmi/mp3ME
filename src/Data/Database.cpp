@@ -74,8 +74,8 @@ bool Database::load_songs(){
 
    songs.reserve(songs_size);
    for (std::uint32_t x = 0; x < songs_size; ++x){
-       Song song = Song::load(file);
-       add_song(song);
+       std::unique_ptr<Song> song = Song::load(file);
+       add_song(std::move(song));
    }
    return true;
 }
@@ -123,13 +123,12 @@ void Database::add_to_album(const std::string& album, Song *pSong){
 
 
 
-void Database::add_song(const Song& song){
-   std::unique_ptr<Song> spSong = std::make_unique<Song>(song);
-   Song *pSong = spSong.get();
+void Database::add_song(std::unique_ptr<Song> song){
+   Song *pSong = song.get();
 
 
-   std::string artist = song.get_artist();
-   std::string album_title = song.get_album();
+   std::string artist = pSong->get_artist();
+   std::string album_title = pSong->get_album();
 
 
    if (!artist_exists(artist)){
@@ -153,7 +152,7 @@ void Database::add_song(const Song& song){
    add_to_album(album, pSong);
 
 
-   songs.push_back(std::move(spSong));
+   songs.push_back(std::move(song));
   
 }
 

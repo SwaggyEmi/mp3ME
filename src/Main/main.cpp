@@ -1,6 +1,7 @@
 
 
 #include <cstdlib>
+#include <memory>
 #include <string>
 #include "Database.hpp"
 #include "SFML/Graphics/Texture.hpp"
@@ -29,13 +30,13 @@ void load_new_songs(){
             continue;
         }
         TagLib::Tag *tag = f.tag();
-        Song s;
+        std::unique_ptr<Song> s = std::make_unique<Song>();
 
-        s.set_file_name(file_path);
-        s.set_artist(tag->artist().to8Bit(true));
-        s.set_title(tag->title().to8Bit(true));
-        s.set_album(tag->album().to8Bit(true));
-        s.set_year_rel(tag->year());
+        s->set_file_name(file_path);
+        s->set_artist(tag->artist().to8Bit(true));
+        s->set_title(tag->title().to8Bit(true));
+        s->set_album(tag->album().to8Bit(true));
+        s->set_year_rel(tag->year());
 
         auto imgList = tag->complexProperties("PICTURE");
         if (!imgList.isEmpty()){
@@ -45,7 +46,7 @@ void load_new_songs(){
                 bool loadedImg = texture.loadFromMemory(imgData.data(), imgData.size());
 
                 if (loadedImg){
-                    s.setImage(texture);
+                    s->setImage(texture);
                 }
             }
         }

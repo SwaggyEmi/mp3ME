@@ -44,7 +44,7 @@ public:
 
     static bool load_songs();
 
-    static void add_song(const Song& song);
+    static void add_song(std::unique_ptr<Song> song);
 
     static void remove_song(const Song& song);
     static std::vector<std::unique_ptr<Song>>& get_all_songs();

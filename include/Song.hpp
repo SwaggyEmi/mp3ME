@@ -1,5 +1,6 @@
 #ifndef SONG_HPP
 #define SONG_HPP
+#include <memory>
 #include <string>
 #include "SFML/Graphics/Sprite.hpp"
 #include "SFML/Graphics/Texture.hpp"
@@ -18,6 +19,8 @@ class Song{
 
 public:
     Song();
+    Song(const Song& song) = delete;
+    Song &operator=(Song &song) = delete;
 
     ~Song();
 
@@ -43,7 +46,7 @@ public:
 
     void save(std::ofstream& file);
 
-    static Song load(std::ifstream& file);
+    static std::unique_ptr<Song> load(std::ifstream& file);
 
 };
 
