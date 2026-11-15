@@ -1,4 +1,7 @@
 #include "Song.hpp"
+#include "SFML/Graphics/Sprite.hpp"
+#include "SFML/Graphics/Image.hpp"
+#include "SFML/Graphics/Texture.hpp"
 #include <string>
 #include <vector>
 #include <cstdint>
@@ -25,7 +28,12 @@ void read_str(std::ifstream& file, std::string& s){
 
 Song::Song() : file_name("No File Name"), title("No Song Title"),
                 artist("No Song Artist"), album("No Song Album"),
-                year_rel(0), times_played(0){}
+                year_rel(0), times_played(0), imgSprite(nullptr){}
+
+
+Song::~Song(){
+    if (imgSprite) delete imgSprite;
+}
 
 void Song::set_file_name(const std::string& file_name){
     this->file_name = file_name;
@@ -43,9 +51,17 @@ void Song::set_year_rel(const int year_rel){
     this->year_rel = year_rel;
 }
 
+void Song::setImage(const sf::Texture &texture){
+    this->imgTexture = texture;
+    this->imgSprite = new sf::Sprite(imgTexture);
+}
+
+
 void Song::inc_times_played(){
     ++times_played;
 }
+
+
 
 std::string Song::get_file_name() const{return file_name;}
 
@@ -56,6 +72,10 @@ std::string Song::get_artist() const{return artist;}
 std::string Song::get_album() const{return album;}
 
 unsigned int Song::get_year_rel() const{return year_rel;}
+
+const sf::Sprite *Song::getImage() const{
+    if (imgSprite) return imgSprite;
+}
 
 
 unsigned int Song::get_times_played() const{return times_played;}
@@ -84,12 +104,10 @@ Song Song::load(std::ifstream& file){
     read_str(file, song.album);
     std::uint32_t year_r = 0;
     std::uint32_t times_p = 0;
-    std::uint32_t genre_size  =0;
+    std::uint32_t genre_size = 0;
 
     file.read(reinterpret_cast<char *>(&year_r), sizeof(year_r));
     file.read(reinterpret_cast<char *>(&times_p), sizeof(times_p));
-    file.read(reinterpret_cast<char *>(&genre_size), sizeof(genre_size));
-
     song.year_rel = year_r;
     song.times_played = times_p;
 

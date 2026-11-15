@@ -3,6 +3,7 @@
 #include <cstdlib>
 #include <string>
 #include "Database.hpp"
+#include "SFML/Graphics/Texture.hpp"
 #include "Song.hpp"
 #include "tag.h"
 #include "fileref.h"
@@ -10,6 +11,7 @@
 #include <filesystem>
 
 #include "MediaWindow.hpp"
+#include "tbytevector.h"
 
 using itr = std::filesystem::directory_iterator;
 
@@ -28,11 +30,25 @@ void load_new_songs(){
         }
         TagLib::Tag *tag = f.tag();
         Song s;
+
         s.set_file_name(file_path);
         s.set_artist(tag->artist().to8Bit(true));
         s.set_title(tag->title().to8Bit(true));
         s.set_album(tag->album().to8Bit(true));
         s.set_year_rel(tag->year());
+
+        auto imgList = tag->complexProperties("PICTURE");
+        if (!imgList.isEmpty()){
+            sf::Texture texture;
+            TagLib::ByteVector imgData = imgList.front()["data"].toByteVector();
+            if (!imgData.isEmpty()){
+                bool loadedImg = texture.loadFromMemory(imgData.data(), imgData.size());
+
+                if (loadedImg){
+                    s.setImage(texture);
+                }
+            }
+        }
         
         Database::add_song(s);
     }

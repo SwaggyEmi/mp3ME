@@ -5,9 +5,7 @@
 #include <memory>
 #include "Song.hpp"
 #include <unordered_map>
-#include <string> 
-#include <utility>
-#include <functional>
+#include <string>
 #include <queue>
 
 //for reading and writing objects

@@ -16,6 +16,7 @@ class MediaWindow : public WindowADT{
 	sf::Font title_font;
 	sf::Text *song_title;
 	sf::Text *artist_text;
+	sf::Sprite *songSprite;
 
 	//song list
 	std::vector<Song*> songs;
@@ -53,6 +54,8 @@ class MediaWindow : public WindowADT{
 	void display_song_artist(const Song* song);
 
 	void display_song_album(const Song* song);
+
+	void display_song_img();
 
 	void center_text(sf::Text* text);
 

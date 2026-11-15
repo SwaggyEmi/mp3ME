@@ -1,4 +1,5 @@
 #include "MediaWindow.hpp"
+#include "SFML/Graphics/Sprite.hpp"
 #include "SFML/Graphics/Text.hpp"
 #include "SFML/Graphics/Color.hpp"
 #include <SFML/Graphics/RectangleShape.hpp>
@@ -14,6 +15,7 @@
 MediaWindow::MediaWindow(): WindowADT("Media Window"), 
 song_title(nullptr),
 artist_text(nullptr),
+songSprite(nullptr),
 prev_label(title_font, "Prev", 18),
 play_label(title_font, "Play", 18),
 next_label(title_font, "Next", 18)
@@ -118,7 +120,8 @@ void MediaWindow::handle_event(const sf::Event& event){
 				selected_index = index;
 				Song* s = songs[index];
 				display_song_info(s);  
-				play_selected_song(); 
+				play_selected_song();
+
 				
 			
 		}
@@ -206,6 +209,12 @@ void MediaWindow::display_song_album(const Song* song){
 }
 
 
+void MediaWindow::display_song_img(){
+	auto img = songs[selected_index]->getImage();
+	if (img) window.draw(*img);
+}
+
+
 void MediaWindow::center_text(sf::Text* text){
 	sf::FloatRect bounds = text->getLocalBounds();
 	text->setOrigin(bounds.getCenter());
@@ -271,7 +280,9 @@ void MediaWindow::draw(){
 
 	window.draw(prev_label);
 	window.draw(play_label);
-	window.draw(next_label); 
+	window.draw(next_label);
+
+	
 }
 
 void MediaWindow::display_song_info(const Song* song){
