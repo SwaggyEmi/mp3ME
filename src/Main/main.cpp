@@ -51,7 +51,7 @@ void load_new_songs(){
             }
         }
         
-        Database::add_song(s);
+        Database::add_song(std::move(s));
     }
 }
 
